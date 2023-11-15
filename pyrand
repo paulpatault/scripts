@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "" | dmenu -i -p "Random from 1 to" | xargs -0 -I % python3 -c "import random;print(random.randint(1,%))" | xargs -I % notify-send "Result" "%"

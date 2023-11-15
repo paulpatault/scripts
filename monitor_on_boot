@@ -1,0 +1,14 @@
+#!/bin/sh
+# Basic setup
+
+dp1="DP-4-1"
+dp2="DP-4-2"
+intern="eDP-1"
+
+xrandr | rg "DP-4-. connected" > /dev/null \
+    && xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
+              --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
+              --output "$intern" --off \
+    || xrandr --output "$intern" --primary --auto
+
+feh --bg-fill --no-fehbg ~/.wallpaper/gruv

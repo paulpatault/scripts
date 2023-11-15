@@ -1,0 +1,3 @@
+#!/bin/bash
+
+printf "latex\nocaml\nhaskell" | dmenu -i -p "Clean for" | xargs -I % _cleaner "%"

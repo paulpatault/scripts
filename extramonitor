@@ -1,0 +1,11 @@
+#!/bin/sh
+# Toogle monitor
+
+intern="eDP-1"
+extern="DP-4-2"
+
+case "$1" in
+    "disconnect") xrandr --output "$extern" --off ;;
+    "extra")      xrandr --output "$extern" --mode 2560x1440 --scale 1.5x1.5 && xrandr --output "$extern" --left-of "$intern" ;;
+    "duplicate")  xrandr --output "$extern" --auto && xrandr --output "$extern" --same-as "$intern" ;;
+esac

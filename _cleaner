@@ -1,0 +1,9 @@
+#!/bin/bash
+
+case "$1" in
+    "latex")   rm -rf *.{aux,bbl,bcf,blg,fdb_latexmk,fls,log,nav,out,run.xml,snm,synctex.gz,toc,vrb,xdv,_minted-*,idx,ind,ilg};;
+    "ocaml")   rm -rf *.{out,cmi,cmo,cmx,o};;
+    "haskell") rm -rf *.{hi,o};;
+    *)         notify-send 'Unkonw Choice' 'The language is not taken from the list' --icon=dialog-error;;
+esac
+
