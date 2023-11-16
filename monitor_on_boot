@@ -1,14 +1,36 @@
 #!/bin/sh
 # Basic setup
 
+nb=$(xrandr | rg "DP-4-. connected" | wc -l)
+
 dp1="DP-4-1"
 dp2="DP-4-2"
+dp3="DP-4-3"
 intern="eDP-1"
 
-xrandr | rg "DP-4-. connected" > /dev/null \
-    && xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
-              --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
-              --output "$intern" --off \
-    || xrandr --output "$intern" --primary --auto
+if [ $nb = 1 ]; then
+    xrandr --output "$dp3" --primary --scale 1.5x1.5 --pos 0x0 --auto \
+           --output "$intern" --auto
+    notify-send 'Xrandr' 'Home layout selected'
+
+elif [ $nb = 2 ]; then
+    xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
+           --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
+           --output "$intern" --off
+    notify-send 'Xrandr' 'Office layout selected'
+
+elif [ $nb = 0 ]; then
+    xrandr --output "$intern" --primary --auto
+    notify-send 'Xrandr' 'single layout selected'
+
+else
+    notify-send 'Xrandr' 'unsupported layout'
+fi
 
 feh --bg-fill --no-fehbg ~/.wallpaper/gruv
+
+# xrandr | rg "DP-4-. connected" > /dev/null \
+#     && xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
+#               --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
+#               --output "$intern" --off \
+#     || xrandr --output "$intern" --primary --auto
