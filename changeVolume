@@ -1,0 +1,29 @@
+#!/bin/bash
+# changeVolume
+
+tag="myVolume"
+
+if [[ $1 == "toggle" ]]; then
+    amixer -D pulse set Master toggle > /dev/null
+else
+    amixer -D pulse sset Master "$@" > /dev/null
+fi
+
+volume="$(amixer -D pulse sget Master | tail -1 | awk '{print $5}' | sed 's/[^0-9]*//g')"
+mute="$(amixer -D pulse sget Master | tail -1 | awk '{print $6}' | sed 's/[^a-z]*//g')"
+
+if [[ $volume == 0 || $mute == "on" ]]; then
+    # Show the sound muted notification
+    dunstify -a "changeVolume" \
+             -u low -t 2000 \
+             -i audio-volume-muted \
+             -h string:x-dunst-stack-tag:$tag \
+             "Volume muted"
+else
+    # Show the volume notification
+    dunstify -a "changeVolume" \
+             -u low -t 2000 \
+             -i audio-volume-high \
+             -h string:x-dunst-stack-tag:$tag \
+             -h int:value:"$volume" "Volume: ${volume}%"
+fi

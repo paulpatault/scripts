@@ -1,0 +1,18 @@
+#!/bin/bash
+# changeLux
+
+tag="myLux"
+
+if [[ $1 == "+" ]]; then
+    lux -a $2%
+else
+    lux -s $2% -m 10
+fi
+
+luminosite="$(lux -G | sed 's/[^0-9]//g')"
+
+dunstify -a "changeLux" \
+         -u low \
+         -i audio-volume-high \
+         -h string:x-dunst-stack-tag:$tag \
+         -h int:value:"$luminosite" "Luminosité: ${luminosite}%"
