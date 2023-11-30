@@ -9,8 +9,8 @@ dp3="DP-4-3"
 intern="eDP-1"
 
 if [ $nb = 1 ]; then
-    xrandr --output "$dp3" --primary --scale 1.5x1.5 --pos 0x0 --auto \
-           --output "$intern" --auto
+    xrandr --output "$dp3" --primary --scale 2x2 --pos 0x0 --auto \
+           --output "$intern" --pos 3840x0 --auto
     notify-send 'Xrandr' 'Home layout selected'
 
 elif [ $nb = 2 ]; then
@@ -27,7 +27,7 @@ else
     notify-send 'Xrandr' 'unsupported layout'
 fi
 
-feh --bg-fill --no-fehbg ~/.wallpaper/gruv
+feh --bg-fill --no-fehbg ~/.wallpaper/pieter_bruegel_the_elder-massacre_of_the_innocents-1567.jpg
 
 # xrandr | rg "DP-4-. connected" > /dev/null \
 #     && xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
