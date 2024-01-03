@@ -8,26 +8,29 @@ dp2="DP-4-2"
 dp3="DP-4-3"
 intern="eDP-1"
 
+xrandr --dpi 192
+
 if [ $nb = 1 ]; then
     xrandr --output "$dp3" --primary --scale 2x2 --pos 0x0 --auto \
            --output "$intern" --pos 3840x0 --auto
-    notify-send 'Xrandr' 'Home layout selected'
+    notify-send 'Xrandr' '[Home] layout selected'
 
 elif [ $nb = 2 ]; then
     xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
            --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
            --output "$intern" --off
-    notify-send 'Xrandr' 'Office layout selected'
+    notify-send 'Xrandr' '[Office] layout selected'
 
 elif [ $nb = 0 ]; then
     xrandr --output "$intern" --primary --auto
-    notify-send 'Xrandr' 'single layout selected'
+    notify-send 'Xrandr' '[Single] layout selected'
 
 else
-    notify-send 'Xrandr' 'unsupported layout'
+    notify-send 'Xrandr' '[Unsupported] layout'
 fi
 
 feh --bg-fill --no-fehbg ~/.wallpaper/pieter_bruegel_the_elder-massacre_of_the_innocents-1567.jpg
+# feh --bg-fill --no-fehbg ~/Desktop/Cezanne_landscape_study_after_nature.jpg
 
 # xrandr | rg "DP-4-. connected" > /dev/null \
 #     && xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \

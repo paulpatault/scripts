@@ -1,4 +1,4 @@
-#!/bin/ocaml
+#!/home/trotski/.opam/default/bin/ocaml
 
 let () = Random.self_init ()
 
