@@ -1,39 +1,42 @@
-#!/bin/sh
-# Basic setup
+#!/bin/zsh
 
-nb=$(xrandr | rg "DP-4-. connected" | wc -l)
-
-dp1="DP-4-1"
-dp2="DP-4-2"
-dp3="DP-4-3"
-intern="eDP-1"
+dp1="DP-4-1"      # `DP-1` port of my dock
+dp2="DP-4-2"      # `DP-2` port of my dock
+dp3="DP-4-3"      # `HDMI` port of my dock
+dp5="DP-5"        # `HDMI` from adaptater
+intern="eDP-1"    # `main`
 
 xrandr --dpi 192
 
-if [ $nb = 1 ]; then
+# nb=$(xrandr | rg "DP-4-. connected" | wc -l)
+extras_monitors=$(xrandr --listmonitors | sed -n '1!p' | sed '/eDP-1/d' | sed -e 's/\s[0-9].*\s\([a-zA-Z0-9\-]*\)$/\1/g')
+nb=$(echo $extras_monitors | wc -l)
+
+
+if [[ $extras_monitors = $dp3 ]]; then
     xrandr --output "$dp3" --primary --scale 2x2 --pos 0x0 --auto \
            --output "$intern" --pos 3840x0 --auto
     notify-send 'Xrandr' '[Home] layout selected'
 
-elif [ $nb = 2 ]; then
+elif [[ $extras_monitors = $dp1*$dp2 ]]; then
     xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
            --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
            --output "$intern" --off
     notify-send 'Xrandr' '[Office] layout selected'
 
-elif [ $nb = 0 ]; then
-    xrandr --output "$intern" --primary --auto
-    notify-send 'Xrandr' '[Single] layout selected'
+elif [[ $extras_monitors = $dp5 ]]; then
+    xrandr --output "$intern" --mode 1920x1080 --output "$dp5" --same-as eDP-1
+    notify-send 'Xrandr' '[S190] layout selected'
+
+elif [[ $nb = 0 ]]; then
+    xrandr --output "$intern" --primary --pos 0x0 --auto
+    notify-send 'Xrandr' '[Labtop only] layout selected'
 
 else
     notify-send 'Xrandr' '[Unsupported] layout'
+
 fi
 
-feh --bg-fill --no-fehbg ~/.wallpaper/pieter_bruegel_the_elder-massacre_of_the_innocents-1567.jpg
-# feh --bg-fill --no-fehbg ~/Desktop/Cezanne_landscape_study_after_nature.jpg
+feh --bg-fill --no-fehbg ~/.wallpaper/Hopper-Gas-1940.png
 
-# xrandr | rg "DP-4-. connected" > /dev/null \
-#     && xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
-#               --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
-#               --output "$intern" --off \
-#     || xrandr --output "$intern" --primary --auto
+# | xargs -n 1 -- bash -xc 'xrandr --output $0 --mode 1920x1080 --pos 0x0 --rotate normal'
