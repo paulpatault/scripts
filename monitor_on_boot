@@ -6,12 +6,10 @@ dp3="DP-4-3"      # `HDMI` port of my dock
 dp5="DP-5"        # `HDMI` from adaptater
 intern="eDP-1"    # `main`
 
-xrandr --dpi 192
+xrandr --dpi 144
 
-# nb=$(xrandr | rg "DP-4-. connected" | wc -l)
-extras_monitors=$(xrandr --listmonitors | sed -n '1!p' | sed '/eDP-1/d' | sed -e 's/\s[0-9].*\s\([a-zA-Z0-9\-]*\)$/\1/g')
-nb=$(echo $extras_monitors | wc -l)
-
+# extras_monitors=$(xrandr --listmonitors | sed -n '1!p' | sed '/eDP-1/d' | sed -e 's/\s[0-9].*\s\([a-zA-Z0-9\-]*\)$/\1/g')
+extras_monitors=$(xrandr | rg  'DP-.* connected' | awk '{print $1}' | sed '/eDP-1/d')
 
 if [[ $extras_monitors = $dp3 ]]; then
     xrandr --output "$dp3" --primary --scale 2x2 --pos 0x0 --auto \
@@ -28,7 +26,7 @@ elif [[ $extras_monitors = $dp5 ]]; then
     xrandr --output "$intern" --mode 1920x1080 --output "$dp5" --same-as eDP-1
     notify-send 'Xrandr' '[S190] layout selected'
 
-elif [[ $nb = 0 ]]; then
+elif [[ $extras_monitors = "" ]]; then
     xrandr --output "$intern" --primary --pos 0x0 --auto
     notify-send 'Xrandr' '[Labtop only] layout selected'
 
