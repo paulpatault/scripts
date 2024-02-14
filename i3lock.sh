@@ -7,6 +7,9 @@ TEXT='#ebdbb2ee'
 WRONG='#fb4934bb'
 VERIFYING='#fabd2fbb'
 
+
+changeVolume "mute"
+
 i3lock \
 --insidever-color=$CLEAR     \
 --ringver-color=$VERIFYING   \
