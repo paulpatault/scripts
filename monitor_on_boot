@@ -12,14 +12,14 @@ notify() {
     notify-send 'Xrandr' $1
 }
 
-extras_monitors=$(xrandr | rg  'DP-.* connected' | awk '{print $1}' | sed '/eDP-1/d')
+extras_monitors=$(xrandr -q | rg  'DP-.* connected' | awk '{print $1}' | sed '/eDP-1/d')
 case $extras_monitors in
     $dp3)
         xrandr --output "$dp3" --primary --scale 2x2 --pos 0x0 --auto \
                --output "$intern" --pos 3840x0 --auto
 
         bspc monitor $dp3    -d 1 2 3 4 5
-        bspc monitor $intern -d           6 7 8 9 0
+        bspc monitor $intern -d 6 7 8 9 0
 
         notify '[Home] layout selected'
         ;;
@@ -29,7 +29,7 @@ case $extras_monitors in
                --output "$intern" --off
         bspc monitor eDP-1 --remove
         bspc monitor $dp1 -d 1 2 3 4 5
-        bspc monitor $dp2 -d           6 7 8 9 0
+        bspc monitor $dp2 -d 6 7 8 9 0
         notify '[Office] layout selected'
         ;;
     $dp5)

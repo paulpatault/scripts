@@ -65,7 +65,7 @@ case ${chosen} in
         confirm_run 'kill -9 -1'
         ;;
     $option_3)
-        confirm_run 'amixer set Master mute' i3lock.sh 'systemctl suspend'
+        confirm_run 'amixer set Master mute' 'bash $HOME/git/scripts/i3lock.sh' 'systemctl suspend'
         ;;
     $option_4)
         confirm_run 'systemctl hibernate'
