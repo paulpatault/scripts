@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BLANK='#175057bb'
 CLEAR='#f2e5bc22'
@@ -7,8 +7,7 @@ TEXT='#ebdbb2ee'
 WRONG='#fb4934bb'
 VERIFYING='#fabd2fbb'
 
-
-changeVolume "mute"
+bash $HOME/git/scripts/changeVolume "mute"
 
 i3lock \
 --insidever-color=$CLEAR     \

@@ -6,7 +6,8 @@ tag="myVolume"
 if [[ $1 == "toggle" ]]; then
     amixer -D pulse set Master toggle > /dev/null
 else if [[ $1 == "mute" ]]; then
-    amixer -D pulse sset Master 0 > /dev/null
+    # amixer -D pulse sset Master 0 > /dev/null
+    amixer set Master mute
 else
     amixer -D pulse sset Master "$@" > /dev/null
 fi

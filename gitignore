@@ -1,3 +1,38 @@
 #!/bin/bash
 
-printf "latex\nocaml\nhaskell" | dmenu -i -p "Generation gitignore" | xargs -I % _gitignore "%"
+source ~/git/scripts/rofi_env.sh
+
+msg="Gitignore"
+
+options=(
+    "latex"
+    "ocaml"
+    "haskell"
+)
+
+run_rofi() {
+    for str in ${options[@]}; do echo $str; done | rofi_dmenu "$msg"
+}
+
+# extension de cameleer vers la logique de séparation pour viper
+
+case "$(run_rofi)" in
+    ${options[0]})
+        echo "# Latex" >> .gitignore
+        exts=("aux" "bbl" "bcf" "blg" "fdb_latexmk" "fls" "log" "nav" "out" "run.xml" "snm" "synctex.gz" "toc" "vrb" "xdv") ;;
+    ${options[1]})
+        echo "# OCaml" >> .gitignore
+        exts=("out" "cmi" "cmo" "o") ;;
+    ${options[2]})
+        echo "# Haskell" >> .gitignore
+        exts=("hi" "o") ;;
+    *)
+        notify-send 'Unkonw Choice' 'The language is not taken from the list' --icon=dialog-error
+        exit 0
+        ;;
+esac
+
+for element in "${exts[@]}"
+do
+    echo "*.$element" >> .gitignore
+done

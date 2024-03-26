@@ -8,11 +8,35 @@ intern="eDP-1"    # `main`
 
 xrandr --dpi 144
 
+extras_monitors=$(xrandr -q | rg  'DP-.* connected' | awk '{print $1}' | sed '/eDP-1/d')
+
 notify() {
     notify-send 'Xrandr' $1
 }
 
-extras_monitors=$(xrandr -q | rg  'DP-.* connected' | awk '{print $1}' | sed '/eDP-1/d')
+monitor_remove() {
+    for extra_monitor in $extras_monitors
+    do
+        bspc monitor $intern -a Desktop # Temp desktop because one desktop required per monitor
+
+        # Move everything to external monitor to reorder desktops
+        for desktop in $(bspc query -D -m $intern)
+        do
+            bspc desktop $desktop --to-monitor $extra_monitor
+        done
+
+        # Now move everything back to internal monitor
+        bspc monitor $extra_monitor -a Desktop # Temp desktop
+
+        for desktop in $(bspc query -D -m $extra_monitor)
+        do
+            bspc desktop $desktop --to-monitor $intern
+        done
+
+        bspc desktop Desktop --remove # Remove temp desktops
+    done
+}
+
 case $extras_monitors in
     $dp3)
         xrandr --output "$dp3" --primary --scale 2x2 --pos 0x0 --auto \
@@ -27,9 +51,11 @@ case $extras_monitors in
         xrandr --output "$dp1" --primary --scale 1.5x1.5 --pos 0x0 --auto \
                --output "$dp2" --scale 1.5x1.5 --pos 5120x0 --auto \
                --output "$intern" --off
+
         bspc monitor eDP-1 --remove
         bspc monitor $dp1 -d 1 2 3 4 5
         bspc monitor $dp2 -d 6 7 8 9 0
+
         notify '[Office] layout selected'
         ;;
     $dp5)
@@ -38,19 +64,15 @@ case $extras_monitors in
         notify '[S190] layout selected'
         ;;
     "")
-        xrandr --output "$intern" --primary --pos 0x0 --auto
+        monitor_remove
+
+        xrandr --output "$intern" --pos 0x0 --mode 2560x1600 --scale 1x1 --primary
         bspc monitor $intern -d 1 2 3 4 5 6 7 8 9
+
         notify '[Labtop only] layout selected'
         ;;
     *) notify '[Unsupported] layout'
         ;;
 esac
-
-for monitor in $(bspc query -M)
-do
-    # bspc monitor $monitor -d 1 2 3 4 5 6 7 8 9
-    # polybar hidden when fullscreen for vlc, youtube, mpv ...
-    xdo below -t $(xdo id -n root) $(xdo id -a polybar-main_$monitor)
-done
 
 feh --bg-fill --no-fehbg ~/.wallpaper/Hopper-Gas-1940.png

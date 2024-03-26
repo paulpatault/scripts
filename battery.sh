@@ -10,7 +10,7 @@ if [[ -z "$time" ]]; then
     time=' Fully Charged'
 fi
 
-mesg="${battery}: ${percentage}%,${time}"
+msg="${battery}: ${percentage}%,${time}"
 
 active=""
 urgent=""
@@ -22,31 +22,30 @@ else
     urgent="-u 1"
 fi
 
-# Options
-option_1="Remaining"
-option_2="Status"
-option_3="Settings"
+options=(
+    "Remaining"
+    "Status"
+    "Settings"
+)
 
 rofi_cmd() {
-    rofi -dmenu \
-        -mesg "$mesg" ${active} ${urgent} \
-        -markup-rows
+    rofi -dmenu -mesg "$msg" ${active} ${urgent} -markup-rows
 }
 
 run_rofi() {
-    echo -e "$option_1\n$option_2\n$option_3" | rofi_cmd
+    for str in ${options[@]}; do echo $str; done | rofi_cmd
 }
 
-# Actions
 chosen="$(run_rofi)"
+
 case ${chosen} in
-    $option_1)
+    ${options[0]})
         notify-send -u low "Remaining : ${percentage}%"
         ;;
-    $option_2)
+    ${options[1]})
         notify-send -u low "Status : $status"
         ;;
-    $option_3)
+    ${options[2]})
         xfce4-power-manager-settings
         ;;
 esac

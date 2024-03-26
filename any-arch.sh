@@ -14,6 +14,7 @@ sudo pacman -S ...
 # apps
     zathura
     zathura-pdf-mupdf
+    evince
     firefox
     thunderbird
     gimp
@@ -73,6 +74,11 @@ sudo pacman -S ...
     lib32-nvidia-utils
     nvidia
     nvidia-utils
+
+# Latex
+    texlive-langfrench
+    texlive-doc
+    texlive-latex
 
 # Intall `yay`
 

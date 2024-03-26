@@ -1,4 +1,15 @@
-#!/bin/bash
-# Wrapper script for extramonitor
+#!/usr/bin/bash
 
-printf "disconnect\nextra\nduplicate" | dmenu -i -p "Monitor Configuration" | xargs -I % extramonitor "%"
+source ~/git/scripts/rofi_env.sh
+
+option_1="disconnect"
+option_2="extra"
+option_3="duplicate"
+
+mesg="Monitor Configuration"
+
+run_rofi() {
+    printf "$option_1\n$option_2\n$option_3" | rofi_dmenu "$mesg"
+}
+
+run_rofi | xargs -I % extramonitor "%"
