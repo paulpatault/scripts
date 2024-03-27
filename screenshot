@@ -1,3 +1,0 @@
-#!/bin/bash
-
-printf "area\nfocus" | dmenu -i -p "Screenshot" | xargs -I % _screenshot "%"

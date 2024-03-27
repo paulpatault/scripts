@@ -22,6 +22,7 @@ sudo pacman -S ...
     kitty
     cvc4
     vlc
+    xournal
 
 # utilities
     cups
